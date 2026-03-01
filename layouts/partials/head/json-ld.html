@@ -1,5 +1,5 @@
 {{ if .IsPage }}
-<script type="application/ld+json">{{ $blogPosting := dict
+{{ $blogPosting := dict
   "@context" "https://schema.org"
   "@type" "BlogPosting"
   "headline" .Title
@@ -13,7 +13,7 @@
 {{ if site.Params.social.email }}
 {{ $blogPosting = merge $blogPosting (dict "author" (merge ($blogPosting.author) (dict "email" site.Params.social.email))) }}
 {{ end }}
-{{ if site.Params.avatar }}
+{{ if and site.Params.avatar site.Params.avatar.url }}
 {{ $blogPosting = merge $blogPosting (dict "publisher" (merge ($blogPosting.publisher) (dict "logo" (dict "@type" "ImageObject" "url" site.Params.avatar.url)))) }}
 {{ end }}
 {{ if .Params.image }}
@@ -24,7 +24,7 @@
 {{ if .Params.tags }}
 {{ $blogPosting = merge $blogPosting (dict "keywords" .Params.tags) }}
 {{ end }}
-{{ $blogPosting | jsonify | safeHTML }}</script>
+{{ printf "<script type=\"application/ld+json\">%s</script>" ($blogPosting | jsonify) | safeHTML }}
 {{ end }}
 
 {{ if and .IsPage (not .IsHome) }}
@@ -34,7 +34,7 @@
     {{ $breadcrumbItems = $breadcrumbItems | append (dict "@type" "ListItem" "position" 2 "name" "Posts" "item" $postsPage.Permalink) }}
   {{ end }}
   {{ $breadcrumbItems = $breadcrumbItems | append (dict "@type" "ListItem" "position" (cond $postsPage 3 2) "name" .Title "item" .Permalink) }}
-<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $breadcrumbItems | jsonify | safeHTML }}</script>
+{{ printf "<script type=\"application/ld+json\">%s</script>" (dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $breadcrumbItems | jsonify) | safeHTML }}
 {{ end }}
 
 {{ if .IsHome }}
@@ -51,9 +51,9 @@
       {{ $webSite = merge $webSite (dict "author" (merge ($webSite.author) (dict "email" site.Params.social.email))) }}
     {{ end }}
   {{ end }}
-  {{ if site.Params.avatar }}
+  {{ if and site.Params.avatar site.Params.avatar.url }}
     {{ $webSite = merge $webSite (dict "publisher" (dict "@type" "Organization" "name" site.Title "logo" (dict "@type" "ImageObject" "url" site.Params.avatar.url))) }}
   {{ end }}
   {{ $webSite = merge $webSite (dict "potentialAction" (dict "@type" "SearchAction" "target" (dict "@type" "EntryPoint" "urlTemplate" (printf "%s?q={search_term_string}" site.BaseURL)) "query-input" "required name=search_term_string")) }}
-<script type="application/ld+json">{{ $webSite | jsonify | safeHTML }}</script>
+{{ printf "<script type=\"application/ld+json\">%s</script>" ($webSite | jsonify) | safeHTML }}
 {{ end }}
