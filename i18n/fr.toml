@@ -27,6 +27,7 @@ skipToMain = "Passer au contenu principal"
 scrollToTop = "Aller en haut de la page"
 
 # Accueil
+home = "Accueil"
 recentPosts = "Articles récents"
 
 # List & filters
@@ -59,6 +60,7 @@ readMore = "Lire la suite"
 archive = "Archive"
 
 # Article unique
+relatedPosts = "Articles similaires"
 tags = "Labels"
 navPrev = "Précédent"
 navNext = "Suivant"

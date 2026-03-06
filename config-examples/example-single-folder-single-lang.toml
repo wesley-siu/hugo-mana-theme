@@ -39,6 +39,7 @@ defaultContentLanguage = "en"
 
 [params]
   enableIntegrity = false
+  relatedPostsCount = 3
   description = "Your site description"
   author = "Your Name"
   heroTitleLine1 = "YOUR SITE NAME"

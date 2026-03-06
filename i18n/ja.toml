@@ -27,6 +27,7 @@ skipToMain = "メインコンテンツに戻る"
 scrollToTop = "上部へ戻る"
 
 # ホーム
+home = "ホーム"
 recentPosts = "最近の投稿"
 
 # リストとフィルター
@@ -59,6 +60,7 @@ readMore = "続きを読む"
 archive = "アーカイブ"
 
 # 単一投稿
+relatedPosts = "関連記事"
 tags = "タグ"
 navPrev = "前へ"
 navNext = "次へ"

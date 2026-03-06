@@ -56,6 +56,7 @@ defaultContentLanguage = "en"
 # =============================================================================
 [params]
   enableIntegrity = false
+  relatedPostsCount = 3
 
   # Default values - languages can override these in [languages.X.params]
   description = "Your site description"
