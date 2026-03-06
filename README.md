@@ -75,6 +75,7 @@ Add your social media links:
   github = "https://github.com/yourusername"
   gitlab = "https://gitlab.com/yourusername"
   linkedin = "https://www.linkedin.com/in/yourprofile"
+  twitter = "yourusername"
   email = "your.email@example.com"
 ```
 
