@@ -1,13 +1,18 @@
 {{ if .IsPage }}
 {{ $authorName := cond (ne (.Params.author | default "") "") .Params.author (cond (ne (site.Params.author | default "") "") site.Params.author site.Title) }}
-{{ $authorSameAs := slice "https://github.com/Livour" "https://www.linkedin.com/in/lior-manasherov/" }}
-{{ $author := dict "@type" "Person" "name" $authorName "sameAs" $authorSameAs }}
+{{ $authorSameAs := slice }}
+{{ if site.Params.social.github }}{{ $authorSameAs = $authorSameAs | append site.Params.social.github }}{{ end }}
+{{ if site.Params.social.gitlab }}{{ $authorSameAs = $authorSameAs | append site.Params.social.gitlab }}{{ end }}
+{{ if site.Params.social.linkedin }}{{ $authorSameAs = $authorSameAs | append site.Params.social.linkedin }}{{ end }}
+{{ if site.Params.social.twitter }}{{ $authorSameAs = $authorSameAs | append (printf "https://twitter.com/%s" (strings.TrimPrefix "@" site.Params.social.twitter)) }}{{ end }}
+{{ $author := dict "@type" "Person" "name" $authorName }}
+{{ if $authorSameAs }}{{ $author = merge $author (dict "sameAs" $authorSameAs) }}{{ end }}
 {{ if site.Params.social.email }}
   {{ $author = merge $author (dict "email" site.Params.social.email) }}
 {{ end }}
 {{ $publisher := dict "@type" "Organization" "name" site.Title "url" site.BaseURL }}
-{{ if and site.Params.avatar site.Params.avatar.url }}
-  {{ $publisher = merge $publisher (dict "logo" (dict "@type" "ImageObject" "url" site.Params.avatar.url)) }}
+{{ if and site.Params.avatar site.Params.avatar.home.assetPath }}
+  {{ $publisher = merge $publisher (dict "logo" (dict "@type" "ImageObject" "url" (site.Params.avatar.home.assetPath | absURL))) }}
 {{ end }}
 {{ $blogPosting := dict
   "@context" "https://schema.org"
@@ -24,10 +29,11 @@
   "author" $author
   "publisher" $publisher
 }}
-{{ if .Params.image }}
-  {{ $blogPosting = merge $blogPosting (dict "image" (.Params.image | absURL)) }}
-{{ else if site.Params.avatar }}
-  {{ $blogPosting = merge $blogPosting (dict "image" site.Params.avatar.url) }}
+{{ $resolvedImage := partial "post-image-resolve.html" . }}
+{{ if $resolvedImage.image }}
+  {{ $blogPosting = merge $blogPosting (dict "image" ($resolvedImage.image | absURL)) }}
+{{ else if and site.Params.avatar site.Params.avatar.home.assetPath }}
+  {{ $blogPosting = merge $blogPosting (dict "image" (site.Params.avatar.home.assetPath | absURL)) }}
 {{ end }}
 {{ if .Params.tags }}
   {{ $blogPosting = merge $blogPosting (dict "keywords" .Params.tags) }}
@@ -59,8 +65,8 @@
       {{ $webSite = merge $webSite (dict "author" (merge ($webSite.author) (dict "email" site.Params.social.email))) }}
     {{ end }}
   {{ end }}
-  {{ if and site.Params.avatar site.Params.avatar.url }}
-    {{ $webSite = merge $webSite (dict "publisher" (dict "@type" "Organization" "name" site.Title "logo" (dict "@type" "ImageObject" "url" site.Params.avatar.url))) }}
+  {{ if and site.Params.avatar site.Params.avatar.home.assetPath }}
+    {{ $webSite = merge $webSite (dict "publisher" (dict "@type" "Organization" "name" site.Title "logo" (dict "@type" "ImageObject" "url" (site.Params.avatar.home.assetPath | absURL)))) }}
   {{ end }}
   {{ $webSite = merge $webSite (dict "potentialAction" (dict "@type" "SearchAction" "target" (dict "@type" "EntryPoint" "urlTemplate" (printf "%s?q={search_term_string}" site.BaseURL)) "query-input" "required name=search_term_string")) }}
 {{ printf "<script type=\"application/ld+json\">%s</script>" ($webSite | jsonify) | safeHTML }}

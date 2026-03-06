@@ -70,6 +70,7 @@ defaultContentLanguage = "en"
     github = "https://github.com/yourusername"
     gitlab = "https://gitlab.com/yourusername"
     linkedin = "https://www.linkedin.com/in/yourprofile"
+    twitter = "yourusername"
     email = "your.email@example.com"
 
   # Avatar (general fallback; override per page with [params.avatar.home] or [params.avatar.about])
