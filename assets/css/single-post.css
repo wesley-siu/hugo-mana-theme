@@ -77,7 +77,8 @@
 .related-post-item {
   padding: 0.75rem;
   border-radius: 0.5rem;
-  background: var(--surface-color, #f9fafb);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
 }
 
 .related-post-link {
